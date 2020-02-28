@@ -1,0 +1,18 @@
+use AuleTemplates
+
+["src/app"]modules{
+    billingModule{
+        shalomComponent("hi",[shalomModel,shalom2Model]),
+        shalomForm("shalomForm",shalomModel),
+        shalomForm("hi",shalomModel),
+    },
+    otherModule{
+
+    }
+}
+["src/app/shared/models"]model{
+    shalomModel("ShalomModel")
+}
+
+
+
