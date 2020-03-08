@@ -1,0 +1,12 @@
+definition{
+    "name":string(),
+    "type":types,
+    "flags":flags
+}
+types{
+"number","boolean"
+}
+flags{
+"optional",
+"inherent"
+}

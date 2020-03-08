@@ -1,0 +1,6 @@
+depends DataModel:rental
+Component ObjectModel
+(
+    DataModel rental,
+){    
+}

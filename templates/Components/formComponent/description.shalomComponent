@@ -1,0 +1,13 @@
+depend dataModel:rental;
+depend Component:dataService;
+depend Component:formDefinition;
+Component FormComponent
+(
+    dataModel:rental,
+    Component:dataService,
+    Component:formDefinition,
+){
+    ["formComponent.html"]<-[rental];
+    ["formComponent.ts]<-[rental,dataService,formDefinition];
+    ["formComponent.shared.form]<-[rental];
+}

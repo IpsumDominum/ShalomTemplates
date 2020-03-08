@@ -1,0 +1,18 @@
+use AuleTemplates
+
+Modules:{
+["src/app"]modules{
+    billingModule{
+        FormComponent["rentalForm"](rentalModel),
+        DisplayComponent["rentalDisplay"](rentalModel),
+    },
+    otherModule{
+    }
+}
+["src/app/shared/models"]model{
+    ModelComponent["rentalModel"](rentalModelData)
+}
+}
+Data:{
+    rentalModelData:StandardObject = file("rentalmodel.shalomData")
+}
