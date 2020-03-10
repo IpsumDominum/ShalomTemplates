@@ -65,15 +65,9 @@ def main():
                         "type":"DisplayComponent",
                         "params":["rentalModel"]
                     },
-                        {
-                        "root":"src/app/billingModule",
-                        "name":"rental",
-                        "type":"ModelComponent",
-                        "params":["file('test.shalomData')"]
-                    },
-                ],"data":[{
-                    "type":"StandardObject",
-                    "src":"rentalmodel.shalomData"
+                ],"models":[{
+                    "type":"StandardModel",
+                    "src":"rental.auleModel"
                 }]
                 }
                 Pipeline(parsed)

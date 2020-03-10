@@ -1,0 +1,14 @@
+definition{
+    "name":alpha(),
+    "type":types,
+    "flag":flag
+}
+types{
+"number","boolean","string"
+}
+flag{
+"?",
+"$"
+}
+
+

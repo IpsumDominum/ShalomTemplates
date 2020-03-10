@@ -1,4 +1,3 @@
-import os,sys
 import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
@@ -22,7 +21,7 @@ class Pipeline:
     def get_build_pipe(self,parsed):
         #print(parsed)
         self.check_dependencies(parsed)
-        data = self.data_loader.load(parsed["data"])
+        data = self.data_loader.load(parsed["models"])
         build_Pipe =[
             {"directory":"Components/formComponent/src/formComponent.html",
             "variables":[]},

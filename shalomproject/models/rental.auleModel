@@ -1,0 +1,2 @@
+rentalName:string:?
+rentalBooked:boolean:$

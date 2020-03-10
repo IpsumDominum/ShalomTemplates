@@ -3,14 +3,14 @@ class DataParser:
 
     def __init__(self):
         self.regex = re.compile(r"\"+|\s+")
-    def parse(self,scanned_tokens):
+    def parsetemplate(self,scanned_tokens):
         parsed_data_template = {}
         found_definition = False
         """Assume definition Exists
         TODO: Check definition exists,
               Check syntax and other errors
         """
-        default_types = ["string()","number()"]
+        default_types = ["alpha()","number()"]
         for item in scanned_tokens["definition"]:
             tokens = self.regex.sub("",item).split(":")                    
             assert(len(tokens)==2)
@@ -30,7 +30,7 @@ class DataParser:
         for item in filedefinition:
             type_def.append(self.regex.sub("",item))    
         return type_def
-    def scan(self,datatemplate): 
+    def scantemplate(self,datatemplate): 
         scanned_tokens = {}
         buffer = ""
         last_def = ""
