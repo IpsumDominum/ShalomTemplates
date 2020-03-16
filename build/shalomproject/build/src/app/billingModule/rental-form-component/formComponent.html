@@ -1,0 +1,74 @@
+<ng-container *ngIf="!loading">
+  <div class="card">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="py-16 text-center">
+        <div class="flex justify-center">
+          <div class="w-32 h-32 border-grey-300 border rounded-full text-center mb-4"> </div>
+        </div>
+        <div class="text-lg font-semibold text-grey-700">Bed</div>
+      </div>
+      <form [formGroup]="bedsForm">
+    
+    <!------------------------rentalName Start------------------->
+    
+            <div class="pb-8">
+              <div>
+                <label for="rentalName" class="form-label">rentalName</label>
+                <input formControlrentalName="rentalName" type="text" id="rentalName" aria-describedby="rentalName" class="base sm inverted">
+                <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.rentalName'>
+                </span>
+              </div>
+              <div class="text-sm text-grey-600 font-semibold mt-2">rentalName's description</div>
+            </div>
+    
+    <!------------------------rentalName Finish------------------->
+
+    <!------------------------rentalBooked Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="rentalBooked" class="form-label">rentalBooked</label>
+                  <input formControlName="rentalBooked" type="number" id="rentalBooked" aria-describedby="rentalBooked"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.rentalBooked'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------rentalBooked Finish------------------->
+
+    <!------------------------rentalDate Start------------------->
+    
+    Something was there
+    
+    <!------------------------rentalDate Finish------------------->
+
+    <!------------------------rentalHello Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="rentalHello" class="form-label">rentalHello</label>
+                  <input formControlName="rentalHello" type="number" id="rentalHello" aria-describedby="rentalHello"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.rentalHello'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------rentalHello Finish------------------->
+
+      </form>
+      <div class="pt-8 wrap-between pb-16">
+        <div></div>
+        <div class="flex">
+          <button type="button" class="btn mr-4" (click)="cancel()">
+            Cancel
+          </button>
+          <button type="button" class="btn" [ngClass]="{'btn-primary': bedsForm.valid}" (click)="submitForm()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

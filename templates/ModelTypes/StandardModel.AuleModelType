@@ -4,7 +4,7 @@ definition{
     "flag":flag
 }
 types{
-"number","boolean","string"
+"number","boolean","string","date"
 }
 flag{
 "?",

@@ -52,25 +52,26 @@ def main():
                 filepath = argv[2]
                 #structureFile = load_file(filepath)
                 #parsed = parse_structure(structureFile)
-                parsed ={"modules":[
+                parsed ={"components":[
                     {
                         "root":"src/app/billingModule",
                         "name":"rental",
-                        "type":"FormComponent",
+                        "type":"formComponent",
                         "params":["rentalModel"]
                     },
                     {
                         "root":"src/app/billingModule",
                         "name":"rental",
-                        "type":"DisplayComponent",
+                        "type":"formComponent",
                         "params":["rentalModel"]
                     },
                 ],"models":[{
+                    "name":"rentalModel",
                     "type":"StandardModel",
                     "src":"rental.auleModel"
                 }]
                 }
-                Pipeline(parsed)
+                Pipeline(parsed,"shalomproject")
                 exit()
         elif(argv[1]=="generate"):
             """shalom generate --componentName"""

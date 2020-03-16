@@ -1,0 +1,6 @@
+Component ServiceComponent
+(
+    ServiceModel:servicemodel,
+){
+    ["test.ts"]<-servicemodel,
+}

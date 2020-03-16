@@ -8,12 +8,11 @@ def parsecomponent(component):
     get result:
     dependencies:[dependencies list]
     what to feed into component templates
-    buildleaf = {"templates":
+    componentTemplate = {"templates":
     "example.html":["examplevariable","somedatalist"]
     }
     """    
-    dependencies = []
-    buildLeaf = {}
+    componentTemplate = {}
     """Sub parts"""
     depends = []
     params = []
@@ -52,10 +51,10 @@ def parsecomponent(component):
                 pass
             else:
                 buffer +=ch
-    dependencies = parseDepends(depends)
-    buildLeaf["params"] = parseParams(params)
-    buildLeaf["defins"] = parseDefins(defins)
-    return buildLeaf,dependencies
+    componentTemplate["dependencies"] = parseDepends(depends)    
+    componentTemplate["params"] = parseParams(params)
+    componentTemplate["defins"] = parseDefins(componentTemplate["params"],defins)
+    return componentTemplate
 def parseDepends(depends):
     parsed_depends = []
     for depend in depends:
@@ -81,7 +80,7 @@ def parseParams(params):
         p_name = tokens[1]
         parsed_params.append(Param(p_type,p_name))
     return parsed_params
-def parseDefins(defins):
+def parseDefins(param_parsed,defins):
     parsed_defins = []
     regex = re.compile(r"\s+|\"|\[|\]")
     for defin in defins:

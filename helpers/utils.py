@@ -27,6 +27,12 @@ def load_file(path):
     else:
         with open(os.path.join(path),"r") as file:
                 return file.read()
+def write_file(towrite,path):
+        if(not os.path.isdir(os.path.split(path)[0])):
+                os.makedirs(os.path.split(path)[0])
+        print(path)
+        with open(path,"w") as file:
+                file.write(towrite)
 def print_invalid_usage():
         print("usage: python main.py build --filepath")
         print("                      generate --componentName")

@@ -1,0 +1,8 @@
+definition{
+    "name":alpha(),
+    "endpoint":alpha(),
+    "requesttype":requestType,
+}
+requestType:{
+    "get","post","delete","put"
+}
