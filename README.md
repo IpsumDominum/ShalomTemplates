@@ -1,4 +1,4 @@
 # ShalomTemplates
 Based on Jinja2, 
-Usage: st build
-                      new --projectname
+Usage: st build<br>
+          new --projectname
