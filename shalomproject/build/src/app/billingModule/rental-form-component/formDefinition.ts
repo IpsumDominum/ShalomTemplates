@@ -13,6 +13,9 @@ export const bookings_ValidatorGroups = {
     rentalHello:[
             Validators.required,
     ],
+    rentalAnother:[
+            Validators.required,
+    ],
     
 };
 
@@ -37,6 +40,11 @@ export const bookings_ValidatorMessages = {
     required: "rentalHello is something else"
     
   },
+  rentalAnother: {
+    
+    required: "rentalAnother is something else"
+    
+  },
   
 };
 
@@ -53,6 +61,9 @@ export const bookingsForm = {
       },
       rentalHello: {
         rentalHello: [null,rentalValidatorGroups.rental.rentalHello],
+      },
+      rentalAnother: {
+        rentalAnother: [null,rentalValidatorGroups.rental.rentalAnother],
       },
       
 };

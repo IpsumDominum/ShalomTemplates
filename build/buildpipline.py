@@ -18,7 +18,7 @@ class Pipeline:
         buildpipe = self.get_build_pipe(parsed)
         self.builder.build(buildpipe)
     """
-        get_build_tree(parsed)
+        get_build_pipe(parsed)
         @parsed - the parsed Structure From structure.shalom
         Traverse through the parsed structure,and build a buildtree
         to be used to handle file building and template etc.
