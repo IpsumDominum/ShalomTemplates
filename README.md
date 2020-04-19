@@ -2,7 +2,7 @@
 Based on Jinja2, <br>
 Usage: <br>
 ```
-st build<br>
+st build
 ```
 ```
 st new --projectname
