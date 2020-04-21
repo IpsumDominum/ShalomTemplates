@@ -1,3 +1,5 @@
+#!python
+
 """Shalom, Template generator for the web
 
 Uses Jinja

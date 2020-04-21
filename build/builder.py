@@ -13,7 +13,7 @@ class TemplateBuilder:
             rendered = Template(load_file(item.src)).render(**item.data,componentName=item.componentName)
             write_file(rendered,item.destination)
     def create_temp_file_structure(self):
-        if(os.path.isdir(os.path.join(self.projectName,"build"))):
+        if(os.path.isdir(os.path.join("build"))):
             pass
         else:
-            os.mkdir(os.path.join(self.projectName,"build"))
+            os.mkdir(os.path.join("build"))

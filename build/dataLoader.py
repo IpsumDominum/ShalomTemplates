@@ -12,8 +12,8 @@ class DataLoader:
         for d in data:
             try:
                 loaded_data[d["name"]] = {}
-                datafile =load_file(os.path.join("shalomproject","models",d["src"]))                
-                datatemplate = load_file(os.path.join("templates","ModelTypes",d["type"]+".AuleModelType"))
+                datafile =load_file(os.path.join("models",d["src"]))                
+                datatemplate = load_file(os.path.join(parentdir,"templates","ModelTypes",d["type"]+".AuleModelType"))
                 parsed_data_template = self.parseDataTemplate(datatemplate)                
                 parsed_data_file = self.parseDataFile(datafile,parsed_data_template)                                
                 loaded_data[d["name"]]["src"]= d["src"]

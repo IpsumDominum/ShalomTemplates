@@ -1,5 +1,0 @@
-rentalName:string:?
-rentalBooked:number:$
-rentalDate:date:$
-rentalHello:number:$
-rentalHello:string:$

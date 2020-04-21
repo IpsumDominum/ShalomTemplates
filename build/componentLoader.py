@@ -14,8 +14,8 @@ class ComponentLoader:
             templates[component["type"]] = component_template
         return templates
     def get_component_template(self,componentType):
-        if componentType in os.listdir(os.path.join("templates","Components")):
-            componentDescription = load_file(["templates","Components",componentType,"description.shalomComponent"])                
+        if componentType in os.listdir(os.path.join(parentdir,"templates","Components")):
+            componentDescription = load_file([parentdir,"templates","Components",componentType,"description.shalomComponent"])                
             componentTemplate = parsecomponent(componentDescription)                                
             return componentTemplate
         else:
