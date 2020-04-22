@@ -5,28 +5,31 @@ currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentfram
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[93m'
+    HEADER = '\033[93m'
+    OKBLUE = '\033[94m'
     OKGREEN = '\033[92m'
-    WARNING = '\033[94m'
+    WARNING = '\033[95m'
     FAIL = '\033[91m'
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 def print_info(messageprimary,messagesecondary=""):
-    print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
+    if(messageprimary!=""):
+        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
     if(messagesecondary!=""):
         print(f"{bcolors.OKBLUE}"+messagesecondary+f"{bcolors.ENDC}")
         print("\n")
 def print_warning(messageprimary,messagesecondary=""):
-    print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
+    if(messageprimary!=""):
+        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
     if(messagesecondary!=""):
         print(f"{bcolors.OKBLUE}"+messagesecondary+f"{bcolors.ENDC}")
         print("\n")
 def print_error(messageprimary,messagesecondary=""):
-    print(f"{bcolors.WARNING}"+messageprimary+f"{bcolors.ENDC}")
+    if(messageprimary!=""):
+        print(f"{bcolors.FAIL}"+messageprimary+f"{bcolors.ENDC}")
     if(messagesecondary!=""):
-        print(f"{bcolors.OKGREEN}"+messagesecondary+f"{bcolors.ENDC}")
+        print(f"{bcolors.HEADER}"+messagesecondary+f"{bcolors.ENDC}")
         print("\n")
 def dasherize(string):
     dasherized = ""
