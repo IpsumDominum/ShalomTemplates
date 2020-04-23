@@ -1,11 +1,27 @@
+"""
+Shalom parser is just a simple way to organize 
+the context free grammar that is used
+to define simple grammars of the
+shalom definitions.
+"""
+import os,sys,inspect
+currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parentdir = os.path.dirname(currentdir)
+sys.path.insert(0,parentdir) 
 import re
 from collections import namedtuple
+from build.parsers.DFA import DFA
 Token = namedtuple("Token","string modifier")
+StringToken = namedtuple("StringToken","tokendef tokenval")
+ParsedBaseToken = namedtuple("ParsedBaseToken","name value")
+ParsedToken = namedtuple("ParsedToken","name value")
 Known_Tokens =  {
+"<ComponentGrammar>":r"<ComponentTemplateName><ComponentParams>",
+"<ModelGrammar>":r"<ModelName>:<ModelTemplateName>"
 "<ComponentTemplateName>":r"<string>",
-"<ComponentParams>":r"(<paramname><paramwithsep*>)",
-"<paramname>":r"name=[\"<string>\"]",
-"<paramwithsep>":r",<string>=[\"<string\"]",
+"<ComponentParams>":r"(<param><paramwithsep*>)",
+"<param>":r"<string>=[\"<string>\"]",
+"<paramwithsep>":r",<string>=[\"<string>\"]",
 "<ModelName>":r"<string>",
 "<ModelTemplateName>":r"<string>",
 }
@@ -14,13 +30,54 @@ Base_Tokens = ["<string>"]
 Valid Grammar definitions:
 character(*or+) <grammardef(*or+)>
 """
-def parse_from_grammar(string,grammar):
+def parse_from_grammar(string,grammar):    
+    """
+    @return parsed
+    parsed is a dictionary which might look like this:
+    parsed = [
+        ParsedToken("<ComponentParams>",value=
+        [
+            ParsedToken("<paramname>",value=[
+                ParsedBaseToken("<string>",value="somevalue")
+            ]),
+            ParsedToken("<paramwithsep>",value=[]),
+            ParsedToken("<paramwithsep>",value=[]),
+            ParsedToken("<paramwithsep>",value=[]),
+            ParsedToken("<paramwithsep>",value=[])
+        ]
+        ),
+        ParsedToken("<ComponentTemplateName>",value=[
+
+        ]
+        )
+    ]
+    """
     tokens = get_tokens(grammar)
-    expanded_tokens = expand_tokens(tokens)    
-    #TODO:
-    #Currently expanded tokens is an expanded expression of the Grammar, however we
-    #Want abstract syntax tree to be returned and also modifiers to be considered.
-    #Need to reimplement expand tokens.
+    string_toks = string_to_token(string)
+    parsed = get_syntax_definition_from_grammar(string_toks,grammar)
+    exit()
+    return parsed
+def string_to_token(string):
+    tokens = []
+    string_started = False
+    string_temp = ""
+    for c in string:
+        if(string_started==True):
+            if(not c.isalpha()):
+                string_started = False
+                tokens.append(StringToken("<string>",string_temp))
+                tokens.append(StringToken("<sep>",c))
+                string_temp = ""
+            else:
+                string_temp +=c
+        elif(string_started==False):
+            if(c.isalpha()):
+                string_started = True
+                string_temp+=c
+            else:
+                tokens.append(StringToken("<sep>",c))
+    return tokens
+        
 def get_tokens(grammar_def):
     #Temporary solution, want to use raw strings for now
     #to get better syntax highlighting, in the future
@@ -66,26 +123,39 @@ def get_tokens(grammar_def):
             else:
                 temp+=c
     return tokens
-def expand_tokens(tokens):
-    #Given a list of tokens as input,
-    #If any token in the list is a Known Token
-    #Recursively,expand the known token definition.
+def expand_token(token):
+    #Given a Known token, expand it.
     expanded = []
-    for token in tokens:
-        if(token.string in Known_Tokens):
-            #Replace token with definition, if it is known
-            meta_tokens = get_tokens(Known_Tokens[token.string])
-            for expanded_item in expand_tokens(meta_tokens):
-                expanded.append(expanded_item)
-        else:
-            if(is_token(token)):
-                if(token.string in Base_Tokens):
-                    expanded.append(token)
-                else:
-                    raise Exception("Token '{}' not in known tokens".format(token.string))
-            else:
-                #Some other syntax, carry on
-                expanded.append(token)
     return expanded
 def is_token(token):
     return token.string[0]=="<" and token.string[-1]==">"
+def is_terminal(token):
+    if is_token(token):
+        return token in Base_Tokens  
+    else:
+         return token
+def get_syntax_definition_from_grammar(string_toks,grammar):
+    """
+    How it works:
+    Go from each token of the grammar,
+    Look at it's modifier(ie. if it is special, say *, then we are
+    expecting it,or expecting the next token,which could be the nil token)
+    expand it if it is not a 
+    """
+    parsed = []
+    token_num = 0
+    """
+    TODO
+    Need to hireachically expand the grammar
+    At each level, keep track of expected
+    next token. Continue if string token
+    is valid.
+    Also need to keep track of each level of 
+    hireachy.
+    Expanding each hireachy level completely
+    and then returning to higher level, moving
+    on to the next token.
+    """
+    return parsed
+def match_base_token(string_tok,grammar_tok):
+    pass

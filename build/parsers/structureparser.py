@@ -28,12 +28,14 @@ project = {"name":"shalomproject","parsed":
 from build.parsers.shalomparser import parse_from_grammar
 class StructureParser:
     def __init__(self):
-        self.componentGrammar = "<ComponentTemplateName><ComponentParams>"
-        self.modelGrammar = "<ModelName>:<ModelTemplateName>"
+        self.componentGrammar = "<ComponentGrammar*>"
+        self.modelGrammar = "<ModelGrammar*>"
     def parse(self,modules,models):
         result = {"components":[],"models":[]}
         #------Parse Components and Models------
-        result["components"] = parse_from_grammar(modules,self.componentGrammar)
+        for m in modules:
+            parsed = parse_from_grammar(modules[m],self.componentGrammar)
+            result["components"].append(parsed)
         result["models"] = parse_from_grammar(models,self.modelGrammar)
         #------Checks semantcs-----
         self.check_semantics(result)
