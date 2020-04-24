@@ -10,6 +10,25 @@ class TemplateBuilder:
     def build(self,buildPipe):
         self.create_temp_file_structure()
         for item in buildPipe:
+            """
+            Template should be able to handle dependencies.
+            Depending on the type of the template
+            
+            There are several types of templates
+            -Component
+                -needs routing
+                -can depend on Data Module
+                -can depend on Model Module
+                -can depend on Form Module
+            -Route Module
+            -Data Module
+                -needs API definition
+            -Form Storage
+                -depend on Data Module
+                -depend on Model module
+                -can depend on Component
+                -append Form definition in form aggregation file
+            """
             rendered = Template(load_file(item.src)).render(**item.data,componentName=item.componentName)
             write_file(rendered,item.destination)
     def create_temp_file_structure(self):
