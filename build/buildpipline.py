@@ -10,12 +10,12 @@ from build.projectLoader import ProjectLoader
 from collections import namedtuple
 BuildItem = namedtuple("BuildItem",'src destination data componentName')
 class Pipeline:
-    def __init__(self):
+    def __init__(self):        
         self.project = ProjectLoader().load_project() #Currently config is not in use
-        self.projectName = self.project["name"]        
+        self.projectName = self.project["name"]                
         self.template_root_path = os.path.join(parentdir,"templates","Components")   
         self.builder = TemplateBuilder(self.projectName)
-        self.data_loader = DataLoader()
+        self.data_loader = DataLoader()        
         self.component_loader = ComponentLoader()
         buildpipe = self.get_build_pipe(self.project["parsed"])
         self.builder.build(buildpipe)

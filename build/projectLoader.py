@@ -14,17 +14,17 @@ class ProjectLoader:
     """
     def load_project(self):        
         #Check if the directory contains project.shalom
-        project = {}
+        project = {}        
         if not os.path.isfile("project.yaml"):
             print_error("Error:","'project.yaml' file not found in current directory. No project found here.")
             exit()
         else:
-            project_structure = load_file("project.yaml")
+            project_structure = load_file("project.yaml")            
             loaded = yaml.load(project_structure,Loader=yaml.FullLoader)
             _ = self._check_valid_structure(loaded)            
             project["name"]= loaded["Project Name"]
             parsed = self.structureParser.parse(modules=loaded["Modules"],models=loaded["Models"])
-            exit()
+            
             project = {"name":"shalomproject","parsed":
                     {"components":[
                     {

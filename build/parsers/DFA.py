@@ -9,8 +9,8 @@ class DFA:
     def __init__(self):
         self.states = {}
         self.current_state = -1
-    def add_state(self,state_val,transitions,accepting):        
-        self.states[state_val] = (DFA_STATE(state_val,transitions,accepting))
+    def add_state(self,state_val,transitions_dict,accepting):        
+        self.states[state_val] = (DFA_STATE(state_val,transitions_dict,accepting))
         if(self.current_state==-1):
             #If DFA not initialized
             self.current_state = state_val
@@ -19,3 +19,5 @@ class DFA:
             raise Exception("DFA not initialized")
         else:
             self.current_state = self.states[self.current_state].transition(alpha)
+    def debug(self):
+        print(self.states)

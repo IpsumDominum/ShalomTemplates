@@ -15,22 +15,19 @@ class bcolors:
     UNDERLINE = '\033[4m'
 def print_info(messageprimary,messagesecondary=""):
     if(messageprimary!=""):
-        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
+        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}",end="")
     if(messagesecondary!=""):
         print(f"{bcolors.OKBLUE}"+messagesecondary+f"{bcolors.ENDC}")
-        print("\n")
 def print_warning(messageprimary,messagesecondary=""):
     if(messageprimary!=""):
-        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}")
+        print(f"{bcolors.HEADER}"+messageprimary+f"{bcolors.ENDC}",end="")
     if(messagesecondary!=""):
         print(f"{bcolors.OKBLUE}"+messagesecondary+f"{bcolors.ENDC}")
-        print("\n")
 def print_error(messageprimary,messagesecondary=""):
     if(messageprimary!=""):
-        print(f"{bcolors.FAIL}"+messageprimary+f"{bcolors.ENDC}")
+        print(f"{bcolors.FAIL}"+messageprimary+f"{bcolors.ENDC}",end="")
     if(messagesecondary!=""):
         print(f"{bcolors.HEADER}"+messagesecondary+f"{bcolors.ENDC}")
-        print("\n")
 def dasherize(string):
     dasherized = ""
     first_cha = True
@@ -59,13 +56,13 @@ def load_file(path):
 def write_file(towrite,path):
         if(not os.path.isdir(os.path.split(path)[0])):
                 os.makedirs(os.path.split(path)[0])
-        print(path)
+        print_info("~Wrote ",path)
         with open(path,"w") as file:
                 file.write(towrite)
 def print_usage():
     print_version()
-    print_info("usage: st build")
-    print_info("          new")
+    print_info("usage: st build\n")
+    print_info("          new","\n")
 def print_help():
     pass
 def print_version():

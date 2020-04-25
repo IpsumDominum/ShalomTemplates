@@ -17,7 +17,7 @@ ParsedBaseToken = namedtuple("ParsedBaseToken","name value")
 ParsedToken = namedtuple("ParsedToken","name value")
 Known_Tokens =  {
 "<ComponentGrammar>":r"<ComponentTemplateName><ComponentParams>",
-"<ModelGrammar>":r"<ModelName>:<ModelTemplateName>"
+"<ModelGrammar>":r"<ModelName>:<ModelTemplateName>",
 "<ComponentTemplateName>":r"<string>",
 "<ComponentParams>":r"(<param><paramwithsep*>)",
 "<param>":r"<string>=[\"<string>\"]",
@@ -51,11 +51,10 @@ def parse_from_grammar(string,grammar):
         ]
         )
     ]
-    """
+    """    
     tokens = get_tokens(grammar)
     string_toks = string_to_token(string)
     parsed = get_syntax_definition_from_grammar(string_toks,grammar)
-    exit()
     return parsed
 def string_to_token(string):
     tokens = []
@@ -152,10 +151,43 @@ def get_syntax_definition_from_grammar(string_toks,grammar):
     is valid.
     Also need to keep track of each level of 
     hireachy.
-    Expanding each hireachy level completely
+    Expanding each hirachy level completely
     and then returning to higher level, moving
     on to the next token.
     """
+    expected = []
+    current = ""
+    DFA = DFA()
+    idx = 0  
+    construct_DFA_from_grammar(DFA,grammar,idx)  
     return parsed
 def match_base_token(string_tok,grammar_tok):
     pass
+"""
+Recursively construct DFA from
+grammar
+"""
+def construct_DFA_from_grammar(DFA,grammar,idx):
+    for n,token in enumerate(get_tokens(grammar)):
+        if(is_terminal(token)):
+            if(token.modifier=="1"):
+                #Add a connection to next state
+                DFA.add_state(idx,{token:idx+1})
+                idx +=1#To construct next state
+            elif(token.modifier=="*"):
+                #Add a connection to a loop state
+                #The loop state should have a connection to next state
+                DFA.add_state(idx,{token:idx+1,get_tokens(grammar)[n+1]:idx+2})
+                #Next string to next state
+                DFA.add_state(idx+1,{get_tokens(grammar)[n+1],idx+2})                
+                idx +=2#Skip to next next state
+            elif(token.modifier=="+"):
+                #Add a connection to a state with self looping, as well
+                #As connection to next state
+                DFA.add_state(idx,{token:idx+1})
+                DFA.add_state(idx+1,{token:idx+1,get_tokens(grammar)[n+1]:idx+2})
+                idx +=2#Skip to next next state
+        else:
+            pass
+            #construct_DFA_from_grammar(DFA,grammar,idx)
+    return DFA
