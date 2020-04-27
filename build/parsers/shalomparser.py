@@ -1,3 +1,35 @@
+class TreeNode():
+    def __init__(self,value="root",parent=None,modifier="1"):
+        self.value = value
+        self.leaves = []
+        self.parent = parent
+        self.modifier = modifier
+        self.visited = False
+    def add(self,token):
+        if(is_terminal(token)):
+            self.leaves.append(TreeNode(value=token.string,parent=self.value,modifier=token.modifier))
+        else:
+            tokens = expand(token.string)
+            leafNode = TreeNode(value=token.string,parent=self.value,modifier=token.modifier)
+            for tok in get_tokens(tokens):
+                leafNode.add(tok)            
+            self.leaves.append(leafNode)
+        return
+    def print(self,leaves):
+        for leaf in leaves:
+            print(leaf,end=" | ")
+        print()
+    def __str__(self):
+        return " |{}| ".format(self.value)
+
+class ParseTree:
+
+    def __init__(self):
+        self.root = TreeNode()
+    def add(self,token):
+        self.root.add(token)
+    def __str__(self):
+        return self.root.traverse("")
 """
 Shalom parser is just a simple way to organize 
 the context free grammar that is used
@@ -54,7 +86,8 @@ def parse_from_grammar(string,grammar):
     """    
     tokens = get_tokens(grammar)
     string_toks = string_to_token(string)
-    parsed = get_syntax_definition_from_grammar(string_toks,grammar)
+    parse_tree = get_parse_tree_from_grammar(grammar)
+    parsed = traverse_parse_tree(parse_tree)
     return parsed
 def string_to_token(string):
     tokens = []
@@ -128,12 +161,12 @@ def expand_token(token):
     return expanded
 def is_token(token):
     return token.string[0]=="<" and token.string[-1]==">"
-def is_terminal(token):
+def is_terminal(token):    
     if is_token(token):
-        return token in Base_Tokens  
+        return token.string in Base_Tokens  
     else:
-         return token
-def get_syntax_definition_from_grammar(string_toks,grammar):
+        return token
+def get_parse_tree_from_grammar(grammar):
     """
     How it works:
     Go from each token of the grammar,
@@ -141,53 +174,14 @@ def get_syntax_definition_from_grammar(string_toks,grammar):
     expecting it,or expecting the next token,which could be the nil token)
     expand it if it is not a 
     """
-    parsed = []
-    token_num = 0
-    """
-    TODO
-    Need to hireachically expand the grammar
-    At each level, keep track of expected
-    next token. Continue if string token
-    is valid.
-    Also need to keep track of each level of 
-    hireachy.
-    Expanding each hirachy level completely
-    and then returning to higher level, moving
-    on to the next token.
-    """
-    expected = []
-    current = ""
-    DFA = DFA()
-    idx = 0  
-    construct_DFA_from_grammar(DFA,grammar,idx)  
-    return parsed
-def match_base_token(string_tok,grammar_tok):
+    parse_tree = ParseTree()
+    for token in get_tokens(grammar):
+        parse_tree.add(token)
+    #print(parse_tree)
+    #exit()
+    return parse_tree
+def traverse_parse_tree(string_toks):
     pass
-"""
-Recursively construct DFA from
-grammar
-"""
-def construct_DFA_from_grammar(DFA,grammar,idx):
-    for n,token in enumerate(get_tokens(grammar)):
-        if(is_terminal(token)):
-            if(token.modifier=="1"):
-                #Add a connection to next state
-                DFA.add_state(idx,{token:idx+1})
-                idx +=1#To construct next state
-            elif(token.modifier=="*"):
-                #Add a connection to a loop state
-                #The loop state should have a connection to next state
-                DFA.add_state(idx,{token:idx+1,get_tokens(grammar)[n+1]:idx+2})
-                #Next string to next state
-                DFA.add_state(idx+1,{get_tokens(grammar)[n+1],idx+2})                
-                idx +=2#Skip to next next state
-            elif(token.modifier=="+"):
-                #Add a connection to a state with self looping, as well
-                #As connection to next state
-                DFA.add_state(idx,{token:idx+1})
-                DFA.add_state(idx+1,{token:idx+1,get_tokens(grammar)[n+1]:idx+2})
-                idx +=2#Skip to next next state
-        else:
-            pass
-            #construct_DFA_from_grammar(DFA,grammar,idx)
-    return DFA
+def expand(token):
+    if(token in Known_Tokens):
+        return Known_Tokens[token]

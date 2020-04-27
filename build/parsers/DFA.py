@@ -5,6 +5,8 @@ class DFA_STATE:
         self.accepting = accepting #Whether the state is an accepting state
     def transition(self,alpha):
         return self.transitions[alpha]
+    def debug(self):
+        print("{}DFASTATE: {} transitions".format(self.accepting,self.state),self.transitions)
 class DFA:
     def __init__(self):
         self.states = {}
@@ -20,4 +22,5 @@ class DFA:
         else:
             self.current_state = self.states[self.current_state].transition(alpha)
     def debug(self):
-        print(self.states)
+        for state in self.states:
+            self.states[state].debug()
