@@ -1,0 +1,9 @@
+Project Name : shalomproject
+Modules:
+    billingModule:
+        formComponent(name=["rentalForm",params=["rental"])
+    otherModule:
+        formComponent(name=["bookingsForm"],params=["bookings"])
+Models:
+    rental:StandardModel
+    bookings:StandardModel

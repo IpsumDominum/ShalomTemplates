@@ -42,7 +42,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 import re
 from collections import namedtuple
-from build.parsers.DFA import DFA
+
 Token = namedtuple("Token","string modifier")
 StringToken = namedtuple("StringToken","tokendef tokenval")
 ParsedBaseToken = namedtuple("ParsedBaseToken","name value")
@@ -86,8 +86,8 @@ def parse_from_grammar(string,grammar):
     """    
     tokens = get_tokens(grammar)    
     parse_tree = get_parse_tree_from_grammar(grammar)
-    parsed = get_parsed(string,parse_tree)
-    print(parsed)
+    parsed = get_parsed(string.replace(" ",""),parse_tree)
+    parsed = beautify_parsed(parsed)
     return parsed
 def string_to_token(string):
     tokens = []
@@ -108,6 +108,8 @@ def string_to_token(string):
                 string_temp+=c
             else:
                 tokens.append(StringToken("<sep>",c))
+    if(string_started):
+        tokens.append(StringToken("<string>",string_temp))
     tokens.append(StringToken("<nil>",""))
     return tokens
         
@@ -188,127 +190,9 @@ def get_parsed(string,parse_tree):
         if(flag==True):
             parsed.append(p_parsed) #p_parsed = partially parsed
         elif(flag==False):
-            raise(SyntaxError("Invalid syntax {}").format(string))
+            raise(SyntaxError("Invalid syntax {}".format(string)))
     return parsed
-def traverse_parse_tree(string_toks,leaf,idx):
-    """
-    Here goes the logic:
-
-    If the leaf is a terminal leaf,
-    check on string_toks, if string_toks
-    has next item corresponding,
-    then register that item's value and form
-    ParsedBaseToken().
-    If the leaf has modifier "*":
-        We keep checking and increasing idx
-        until we find False,then we roll back idx
-        Or until we find end of line. Then terminate 
-        with True
-        If we find False initially we can return True too,
-        since * is optional.
-    If the leaf has modifier "+":
-        We keep checking and increasing idx
-        until we find False,then we roll back idx
-        Or until we find end of line. Then terminate 
-        with True
-    otherwise
-        We check the next token in string,
-        if it matches expected then we return True
-        otherwise False
-
-    If the leaf is not a terminal leaf:
-        Then we expand it recursively.
-        The result of the recursive expansion:
-        Concretely for intuition,
-        as an example:
-        at the lowest level:
-        We have    <token>
-                    |   |
-                    t1 <token2>
-        Where <> denotes non-terminal leaf
-        and no brackets otherwise.
-
-        Here if t1 returns True,
-        we check <token2>
-        if <token2> also returns True
-        our token accepted, and we
-        return with forwarded idx
-    If the <token> has modifier *:
-        If the leaf has modifier "*":
-        We keep checking and increasing idx
-        until we find False,then return parsed and True
-        If we find False initially we can return True too,
-        since * is optional.
-    If the <token> has modifier +:
-        we will return False if no match,
-        True if match, and append
-        until False is found.
-        Again there is the problem of 
-        <string*> to <string*>
-        or <string+> to <string+>
-        and similar.
-        So the person writing the grammar
-        has to consider that.
-        And in fact that should be an 
-        error in the parse_tree to catch
-        "bad" grammar definitions which
-        are impossible to parse.
-    If the <token> has modifier 1:
-        return True if match
-        False if no match
-
-    End Cases:
-        There are a few cases to 
-        consider.
-        1.All of the expected Strings are
-        found, and we didn't reach the 
-        <nil> token, we just check if 
-        the token is in fact a <nil> token,
-        if so, we accept the whole parsed,
-        otherwise we reject.
-
-        2.Parse tree haven't been finished
-        traversing, but the string has been
-        exhausted. In the case the <nil>
-        token will be rejected, leading
-        to the rejection of the whole tree.
-
-        3.In the case of the token which is
-        supposed to reject <nil> being a *
-        modifier token. If the * modifier
-        is in the middle of the parse tree
-        then the next should hopefully
-        reject.
-        Otherwise if it is in the end,
-        we don't mind, it's still
-        a valid accepted string by
-        the grammar.
-        
-        4.If at any case unknown token
-          is found, just terminate.
-          This is the issue again of the
-          grammar writing person. (me)
-
-    Note:
-    The case where t1 is <string*>
-    and <token2> is also say <string>
-    Will certainly cause a problem.
-    So it is to be avoided in the
-    grammar definition. 
-    Hence this is not a fully 
-    function parser for context
-    free grammar.(not even regular
-    languages) (obviously 
-    since it does not support the
-    "or" operator, "|", or
-    aUb "union" operation)
-    This parser is meant for a 
-    quick and easy solution to 
-    my own use in implementing 
-    simple language definitions
-    for data files.
-
-    """
+def traverse_parse_tree(string_toks,leaf,idx):   
     parsed = []
     tempidx = idx #temp idx is used for rolling back
     """
@@ -328,13 +212,13 @@ def traverse_parse_tree(string_toks,leaf,idx):
             since * is optional.
             """            
             while(True):
-                if(string_toks[tempidx].tokendef==leaf.value.string):
+                if(string_toks[tempidx].tokendef==leaf.value.string):                    
                     #If match                    
                     parsed.append(ParsedBaseToken(leaf.value.string,string_toks[tempidx]))
                     tempidx +=1
                     idx +=1
                 else:
-                    #If no match
+                    #If no match                    
                     return parsed,True,idx
         elif(leaf.value.modifier=="+"):
             """
@@ -374,13 +258,23 @@ def traverse_parse_tree(string_toks,leaf,idx):
             return True if match
             False if no match
             """
-            if(string_toks[tempidx].tokendef==leaf.value.string):
+            if(string_toks[tempidx].tokendef=="<sep>"):
+                if(string_toks[tempidx].tokenval==leaf.value.string):
+                    #If match                    
+                    parsed.append(ParsedBaseToken(leaf.value.string,string_toks[tempidx]))
+                    tempidx +=1
+                    idx +=1                
+                    return parsed,True,idx
+                else:
+                    #If no match on first token
+                    return parsed,False,idx
+            elif(string_toks[tempidx].tokendef==leaf.value.string):
                 #If match                    
                 parsed.append(ParsedBaseToken(leaf.value.string,string_toks[tempidx]))
                 tempidx +=1
-                idx +=1
+                idx +=1                
                 return parsed,True,idx
-            else:
+            else:                
                 #If no match on first token
                 return parsed,False,idx
         else:
@@ -400,13 +294,13 @@ def traverse_parse_tree(string_toks,leaf,idx):
             StringToken = namedtuple("StringToken","tokendef tokenval")
             ParsedBaseToken = namedtuple("ParsedBaseToken","name value")
             ParsedToken = namedtuple("ParsedToken","name values")
-            """
-            r_flag = True #result flag
+            """            
             while(True):
-                temp_values = []#prepared parent values
+                r_flag = True #result flag
+                temp_values = []#prepared parent values                
                 #For each leaf we expand
                 for p_leaf in leaf.leaves:
-                    t_parsed,t_flag,t_idx = traverse_parse_tree(string_toks,p_leaf,tempidx)
+                    t_parsed,t_flag,t_idx = traverse_parse_tree(string_toks,p_leaf,tempidx)                    
                     #Expand leaf may be good or not good.
                     if(t_flag==True):
                         #If leaf is good
@@ -414,17 +308,17 @@ def traverse_parse_tree(string_toks,leaf,idx):
                         tempidx = t_idx #only update tempidx here so we can roll back
                     else:
                         #If leaf is not good :P The parent is not accepted either.
-                        tempidx = idx #roll back :( Seek cover, mission aborted Meow
                         r_flag = False
-                        break
+                        break                
                 if(r_flag==True):
                     parsed.append(ParsedToken(leaf.value,temp_values))
                 else:
                     break
             if(r_flag==True):
-                idx = tempidx #we don't roll back , success ;) (as of for now meow)
+                idx = tempidx 
                 return parsed,True,idx
             elif(r_flag==False):
+                idx = tempidx 
                 return parsed,True,idx
 
         elif(leaf.value.modifier=="+"):
@@ -461,9 +355,9 @@ def traverse_parse_tree(string_toks,leaf,idx):
             if(r_flag==True):
                 #Found once (First guy is accepted)
                 parsed.append(ParsedToken(leaf.value,temp_values))#We append the one we found
-                idx = tempidx #Set idx to temp idx ;) (smiling for now)
-                r_flag = True #Variable reuse??Seems like not good practice, ironically actually the intention is that it is here to make the code a bit more readible (lol, readible,haha)..Also this comment is getting out of town.
+                idx = tempidx #Set idx to temp idx ;) (smiling for now)                
                 while(True):
+                    r_flag = True #Variable reuse??Seems like not good practice, ironically actually the intention is that it is here to make the code a bit more readible (lol, readible,haha)..Also this comment is getting out of town.
                     #Then we effectively enter * mode
                     #Expecting 0 or more of the token
                     #We'll check all it's children, recursively seeing if they
@@ -500,16 +394,16 @@ def traverse_parse_tree(string_toks,leaf,idx):
             else:
                 #If not even once is found, mission aborted :(
                 return parsed,False,idx
-        elif(leaf.value.modifier=="1"):
+        elif(leaf.value.modifier=="1"):         
             """
             return True if match
             False if no match
             """
             r_flag = True #result flag
             temp_values = []
-            #Check all the leaves
-            for p_leaf in leaf.leaves:
-                t_parsed,t_flag,t_idx = traverse_parse_tree(string_toks,p_leaf,tempidx)
+            #Check all the leaves            
+            for p_leaf in leaf.leaves:                                                
+                t_parsed,t_flag,t_idx = traverse_parse_tree(string_toks,p_leaf,tempidx)                
                 #Expanded leaf result may be good or bad
                 if(t_flag==True):
                     #If result is good
@@ -519,11 +413,11 @@ def traverse_parse_tree(string_toks,leaf,idx):
                     #If result is bad, we reject parent too
                     tempidx = idx #roll back :( Seek cover, mission aborted Meow
                     r_flag = False
-                    break
+                    break            
             if(r_flag==True):
                 #All leaves are accepted, we accept parent too.
                 parsed.append(ParsedToken(leaf.value,temp_values))
-                idx = tempidx
+                idx = tempidx         
                 return parsed,True,idx
             elif(r_flag==False):
                 #There was something wrong with the leaves :(
@@ -537,4 +431,25 @@ def expand(token):
     if(token in Known_Tokens):
         return Known_Tokens[token]
 
-        
+def beautify_parsed(parsed):
+    #By beautify we mean we put our parsed into a dictionary
+    parsed_list= []
+    for item in parsed[0]:
+        if(type(item)== type(ParsedBaseToken("None","None"))):
+            if(item.value.tokendef!="<sep>"):
+                parsed_list.append({item.name:item.value.tokenval})
+        elif(type(item)== type(ParsedToken("None","None"))):
+            parsed_list.append({item.name.string:expand_parsed_item(item.values)}) #Recursion
+    return parsed_list
+    
+def expand_parsed_item(parsed_item):
+    #It's the same as the above function, but why not 
+    #separate them so it's a tiny bit more readable.
+    parsed_list = []
+    for item in parsed_item:
+        if(type(item)== type(ParsedBaseToken("None","None"))):
+            if(item.value.tokendef!="<sep>"):
+                parsed_list.append({item.name:item.value.tokenval})
+        elif(type(item)== type(ParsedToken("None","None"))):            
+            parsed_list.append({item.name.string:expand_parsed_item(item.values)}) #Recursion
+    return parsed_list

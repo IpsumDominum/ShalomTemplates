@@ -47,6 +47,8 @@ template = """#This is an Aule Template, Run "python auleschematics generate" to
     }
 """
 def main():
+    Pipeline()
+    exit()
     if(len(argv)>1):
         if(argv[1]=="build"):
             """shalom build """            

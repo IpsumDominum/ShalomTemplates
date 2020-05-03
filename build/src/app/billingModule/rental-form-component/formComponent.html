@@ -1,0 +1,186 @@
+<ng-container *ngIf="!loading">
+  <div class="card">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="py-16 text-center">
+        <div class="flex justify-center">
+          <div class="w-32 h-32 border-grey-300 border rounded-full text-center mb-4"> </div>
+        </div>
+        <div class="text-lg font-semibold text-grey-700">Bed</div>
+      </div>
+      <form [formGroup]="bedsForm">
+    
+    <!------------------------tenantName Start------------------->
+    
+            <div class="pb-8">
+              <div>
+                <label for="tenantName" class="form-label">tenantName</label>
+                <input formControltenantName="tenantName" type="text" id="tenantName" aria-describedby="tenantName" class="base sm inverted">
+                <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.tenantName'>
+                </span>
+              </div>
+              <div class="text-sm text-grey-600 font-semibold mt-2">tenantName's description</div>
+            </div>
+    
+    <!------------------------tenantName Finish------------------->
+
+    <!------------------------bedsId Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="bedsId" class="form-label">bedsId</label>
+                  <input formControlName="bedsId" type="number" id="bedsId" aria-describedby="bedsId"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.bedsId'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------bedsId Finish------------------->
+
+    <!------------------------tenantId Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="tenantId" class="form-label">tenantId</label>
+                  <input formControlName="tenantId" type="number" id="tenantId" aria-describedby="tenantId"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.tenantId'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------tenantId Finish------------------->
+
+    <!------------------------roomsId Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="roomsId" class="form-label">roomsId</label>
+                  <input formControlName="roomsId" type="number" id="roomsId" aria-describedby="roomsId"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.roomsId'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------roomsId Finish------------------->
+
+    <!------------------------roomType Start------------------->
+    
+            <div class="pb-8">
+              <div>
+                <label for="roomType" class="form-label">roomType</label>
+                <input formControlroomType="roomType" type="text" id="roomType" aria-describedby="roomType" class="base sm inverted">
+                <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.roomType'>
+                </span>
+              </div>
+              <div class="text-sm text-grey-600 font-semibold mt-2">roomType's description</div>
+            </div>
+    
+    <!------------------------roomType Finish------------------->
+
+    <!------------------------roomGender Start------------------->
+    
+            <div class="pb-8">
+              <div>
+                <label for="roomGender" class="form-label">roomGender</label>
+                <input formControlroomGender="roomGender" type="text" id="roomGender" aria-describedby="roomGender" class="base sm inverted">
+                <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.roomGender'>
+                </span>
+              </div>
+              <div class="text-sm text-grey-600 font-semibold mt-2">roomGender's description</div>
+            </div>
+    
+    <!------------------------roomGender Finish------------------->
+
+    <!------------------------numberPeople Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="numberPeople" class="form-label">numberPeople</label>
+                  <input formControlName="numberPeople" type="number" id="numberPeople" aria-describedby="numberPeople"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.numberPeople'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------numberPeople Finish------------------->
+
+    <!------------------------duration Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="duration" class="form-label">duration</label>
+                  <input formControlName="duration" type="number" id="duration" aria-describedby="duration"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.duration'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------duration Finish------------------->
+
+    <!------------------------startDate Start------------------->
+    
+    Something was there
+    
+    <!------------------------startDate Finish------------------->
+
+    <!------------------------maxRent Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="maxRent" class="form-label">maxRent</label>
+                  <input formControlName="maxRent" type="number" id="maxRent" aria-describedby="maxRent"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.maxRent'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------maxRent Finish------------------->
+
+    <!------------------------message Start------------------->
+    
+            <div class="pb-8">
+              <div>
+                <label for="message" class="form-label">message</label>
+                <input formControlmessage="message" type="text" id="message" aria-describedby="message" class="base sm inverted">
+                <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.message'>
+                </span>
+              </div>
+              <div class="text-sm text-grey-600 font-semibold mt-2">message's description</div>
+            </div>
+    
+    <!------------------------message Finish------------------->
+
+    <!------------------------propertyId Start------------------->
+    
+            <div class="w-1/3 px-4">
+                <div>
+                  <label for="propertyId" class="form-label">propertyId</label>
+                  <input formControlName="propertyId" type="number" id="propertyId" aria-describedby="propertyId"
+                    class="base sm inverted">
+                  <span class="text-sm text-red-500 block mt-2" *ngIf='formErrors.propertyId'>
+                  </span>
+                </div>
+              </div>
+    
+    <!------------------------propertyId Finish------------------->
+
+      </form>
+      <div class="pt-8 wrap-between pb-16">
+        <div></div>
+        <div class="flex">
+          <button type="button" class="btn mr-4" (click)="cancel()">
+            Cancel
+          </button>
+          <button type="button" class="btn" [ngClass]="{'btn-primary': bedsForm.valid}" (click)="submitForm()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

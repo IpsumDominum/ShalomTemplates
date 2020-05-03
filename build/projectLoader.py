@@ -23,8 +23,9 @@ class ProjectLoader:
             loaded = yaml.load(project_structure,Loader=yaml.FullLoader)
             _ = self._check_valid_structure(loaded)            
             project["name"]= loaded["Project Name"]
-            parsed = self.structureParser.parse(modules=loaded["Modules"],models=loaded["Models"])
-            
+            parsed = self.structureParser.parse(modules=loaded["Modules"],models=loaded["Models"])            
+            exit()
+            """
             project = {"name":"shalomproject","parsed":
                     {"components":[
                     {
@@ -45,6 +46,7 @@ class ProjectLoader:
                     "src":"rental.auleModel"
                 }]
                 }}
+            """
         return project
     def _check_valid_structure(self,structure):
         for check in["Project Name","Modules","Models"]:
