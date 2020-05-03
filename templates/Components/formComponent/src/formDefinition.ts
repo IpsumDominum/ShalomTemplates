@@ -1,13 +1,13 @@
 import { Validators } from '@angular/forms';
 
-export const bookings_ValidatorGroups = {
+export const {{componentName}}_ValidatorGroups = {
     {% for m in model %}{{m.name}}:[
             Validators.required,
     ],
     {% endfor %}
 };
 
-export const bookings_ValidatorMessages = {
+export const {{componentName}}_ValidatorMessages = {
   {% for m in model %}{{m.name}}: {
     {% if m.type=="boolean" %}
     required: "{{m.name}} has to be a boolean"
@@ -19,9 +19,9 @@ export const bookings_ValidatorMessages = {
 };
 
 
-export const bookingsForm = {
+export const {{componentName}}Form = {
     {% for m in model %}{{m.name}}: {
-        {{m.name}}: [null,{{componentName}}ValidatorGroups.{{componentName+"."+m.name}}],
+        {{m.name}}: [null,{{componentName}}_ValidatorGroups.{{m.name}}],
       },
       {% endfor %}
 };

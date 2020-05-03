@@ -24,29 +24,7 @@ class ProjectLoader:
             _ = self._check_valid_structure(loaded)            
             project["name"]= loaded["Project Name"]
             parsed = self.structureParser.parse(modules=loaded["Modules"],models=loaded["Models"])            
-            exit()
-            """
-            project = {"name":"shalomproject","parsed":
-                    {"components":[
-                    {
-                        "root":"src/app/billingModule",
-                        "name":"rental",
-                        "type":"formComponent",
-                        "params":["rentalModel"]
-                    },
-                    {
-                        "root":"src/app/billingModule",
-                        "name":"rental",
-                        "type":"formComponent",
-                        "params":["rentalModel"]
-                    },
-                ],"models":[{
-                    "name":"rentalModel",
-                    "type":"StandardModel",
-                    "src":"rental.auleModel"
-                }]
-                }}
-            """
+            project["parsed"] = parsed
         return project
     def _check_valid_structure(self,structure):
         for check in["Project Name","Modules","Models"]:

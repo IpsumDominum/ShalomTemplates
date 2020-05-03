@@ -3,7 +3,7 @@ import os,sys,inspect
 currentdir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
-from helpers.utils import load_file,write_file
+from helpers.utils import load_file,write_file,capitalize,dasherize
 class TemplateBuilder:
     def __init__(self,projectName):
         self.projectName = projectName
@@ -29,7 +29,7 @@ class TemplateBuilder:
                 -can depend on Component
                 -append Form definition in form aggregation file
             """
-            rendered = Template(load_file(item.src)).render(**item.data,componentName=item.componentName)
+            rendered = Template(load_file(item.src)).render(**item.data,componentName=item.componentName,capitalize=capitalize,dasherize=dasherize)
             write_file(rendered,item.destination)
     def create_temp_file_structure(self):
         if(os.path.isdir(os.path.join("build"))):

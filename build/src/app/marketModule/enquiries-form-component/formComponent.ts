@@ -1,32 +1,33 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FormService, {{capitalize(componentName)}}Service, AuthService} from '../../../shared/services';
+import { FormService, EnquiriesService, AuthService} from '../../../shared/services';
 import { SelectOptions } from '../../billing-shared';
-import { {{capitalize(componentName)}}Item } from '../../../shared/models';
+import { EnquiriesItem } from '../../../shared/models';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { promise } from 'protractor';
 
 @Component({
-  selector: 'app-{{componentName}}-form',
-  templateUrl: './{{componentName}}-form.component.html'
+  selector: 'app-enquiries-form',
+  templateUrl: './enquiries-form.component.html'
 })
-export class {{capitalize(componentName)}}FormComponent implements OnInit, OnDestroy {
+export class EnquiriesFormComponent implements OnInit, OnDestroy {
 
-  {{componentName}}: {{capitalize(componentName)}}Item;
+  enquiries: EnquiriesItem;
   unsubscribe: Subject<void> = new Subject<void>();
   loading: boolean = true;
   isNew:boolean;
-  {{componentName}}Form: FormGroup;
+  enquiriesForm: FormGroup;
   formErrors: any = {};
   constructor(
-    private {{componentName}}Service: {{capitalize(componentName)}}Service,
+    private enquiriesService: EnquiriesService,
     private formService: FormService,
     private authService: AuthService,
     private formBuilder: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
+    private dataService: DataService
   ) { }
 
   ngOnInit() {
@@ -65,9 +66,9 @@ export class {{capitalize(componentName)}}FormComponent implements OnInit, OnDes
    * Builds the form and handles validation.
    */
   buildForm() {
-    this.{{componentName}}Form = this.formBuilder.group(this.formService.formBuilds.{{componentName}}Form);
-    this.{{componentName}}Form.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
-      this.formErrors = this.formService.getErrors(this.{{componentName}}Form);
+    this.enquiriesForm = this.formBuilder.group(this.formService.formBuilds.enquiriesForm);
+    this.enquiriesForm.valueChanges.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+      this.formErrors = this.formService.getErrors(this.enquiriesForm);
     });
   }
   /**
@@ -79,16 +80,16 @@ export class {{capitalize(componentName)}}FormComponent implements OnInit, OnDes
     this.enquiriesForm.patchValue({
     });
     */
-    const form_grabbed = this.{{componentName}}.value;
+    const form_grabbed = this.enquiries.value;
     form_grabbed.accountId = this.authService.getAccountId();
     if (this.isNew) {
-      this.{{componentName}}Service.create{{componentName}}(form_grabbed).then((result) => {
+      this.enquiriesService.createenquiries(form_grabbed).then((result) => {
         this.router.navigateByUrl('/...route to be replaced..../view/' + result);
       });
     } else {
-      form_grabbed.{{componentName}}Id = this.{{componentName}}.{{componentName}}Id;
-      this.{{componentName}}Service.updateEnquiries(form_grabbed).then(() => {
-        this.router.navigateByUrl('/...route to be replaced..../view/' + this.{{componentName}}.{{componentName}}Id);
+      form_grabbed.enquiriesId = this.enquiries.enquiriesId;
+      this.enquiriesService.updateEnquiries(form_grabbed).then(() => {
+        this.router.navigateByUrl('/...route to be replaced..../view/' + this.enquiries.enquiriesId);
       });
     }
     this.loading = false;

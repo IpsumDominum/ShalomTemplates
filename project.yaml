@@ -1,9 +1,9 @@
 Project Name : shalomproject
 Modules:
-    billingModule:
-        formComponent(name=["rentalForm",params=["rental"])
-    otherModule:
-        formComponent(name=["bookingsForm"],params=["bookings"])
+    marketModule:
+        formComponent(name=["enquiries"],params=["enquiriesModel"])
+        formComponent(name=["bookings"],params=["bookingsModel"])
+        
 Models:
-    rental:StandardModel
-    bookings:StandardModel
+    enquiriesModel:StandardModel
+    bookingsModel:StandardModel

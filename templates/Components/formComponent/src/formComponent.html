@@ -5,9 +5,9 @@
         <div class="flex justify-center">
           <div class="w-32 h-32 border-grey-300 border rounded-full text-center mb-4"> </div>
         </div>
-        <div class="text-lg font-semibold text-grey-700">Bed</div>
+        <div class="text-lg font-semibold text-grey-700">{{capitalize(componentName)}}</div>
       </div>
-      <form [formGroup]="bedsForm">
+      <form [formGroup]="{{componentName}}Form">
     {% for m in model%}
     <!------------------------{{m.name}} Start------------------->
     {% if m.type=="string"%}

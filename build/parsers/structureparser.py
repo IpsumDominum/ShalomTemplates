@@ -33,15 +33,17 @@ class StructureParser:
     def parse(self,modules,models):
         result = {"components":[],"models":[]}
         #------Parse Components and Models------
-        #for m in modules:
-            #parsed = parse_from_grammar(modules[m],self.componentGrammar)
-            #result["components"].append(parsed)
+        for m in modules:
+            for component in modules[m].split(" "):
+                component_parsed = parse_from_grammar(component,self.componentGrammar)                
+                formatted = self.format_component_parse_result(component_parsed,m)
+                result["components"].append(formatted)
+
         for model in models.split(" "):
             result["models"].append(
                 self.format_model_parse_result(
                 parse_from_grammar(model,self.modelGrammar)
                 ))
-            print(result)
         #------Checks semantcs-----
         self.check_semantics(result)
         return result
@@ -54,5 +56,21 @@ class StructureParser:
         formatted["type"] = res[0]["<ModelGrammar>"][1]["<ModelTemplateName>"][0]["<string>"]
         formatted["src"] = formatted["name"]+".auleModel"
         return formatted
-    def format_component_parse_result(self,res):
-        pass
+    def format_component_parse_result(self,res,module):
+        """
+          {
+            "root":"src/app/billingModule",
+            "name":"rental",
+            "type":"formComponent",
+            "params":["rentalModel"]
+        },
+        """
+        formatted = {}        
+        formatted["root"] = "src/app/" + module
+        formatted["name"] = res[0]["<ComponentGrammar>"][1]["<ComponentParams>"][0]["<param>"][1]["<string>"]
+        formatted["type"] = res[0]["<ComponentGrammar>"][0]["<ComponentTemplateName>"][0]["<string>"]
+        formatted["params"] = []
+        for n,param in enumerate(res[0]["<ComponentGrammar>"][1]["<ComponentParams>"][1]["<paramwithsep>"]):
+            if(n%2!=0):
+                formatted["params"].append(param["<string>"])
+        return formatted

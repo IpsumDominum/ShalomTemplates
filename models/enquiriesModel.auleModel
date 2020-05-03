@@ -1,0 +1,12 @@
+tenantName:string:$
+bedsId:number:?
+tenantId:number:$
+roomsId:number:$
+roomType:string:$
+roomGender:string:$
+numberPeople:number:$
+duration:number:$
+startDate:date:$
+maxRent:number:$
+message:string:$
+propertyId:number:$
