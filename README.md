@@ -7,3 +7,5 @@ st new --projectname
 ```
 st build
 ```
+
+### [See Docs](https://shalomtemplate.netlify.app/)
